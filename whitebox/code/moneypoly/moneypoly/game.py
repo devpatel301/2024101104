@@ -43,27 +43,38 @@ class Game:
             f"Turn {self.turn_number + 1}  |  {player.name}  |  ${player.balance}"
         )
 
-        if player.jail["in_jail"]:
-            self._handle_jail_turn(player)
+        if player.is_bankrupt():
+            self._check_bankruptcy(player)
             self.advance_turn()
             return
 
-        roll = self.dice.roll()
-        print(f"  {player.name} rolled: {self.dice.describe()}")
+        while True:
+            # Handle user interaction (trading, mortgaging, etc.)
+            self.interactive_menu(player)
 
-        # Three consecutive doubles sends a player to jail
-        if self.dice.doubles_streak >= 3:
-            print(f"  {player.name} rolled doubles three times in a row — go to jail!")
-            player.go_to_jail()
-            self.advance_turn()
-            return
+            if player.jail["in_jail"]:
+                self._handle_jail_turn(player)
+                break
 
-        self._move_and_resolve(player, roll)
+            roll = self.dice.roll()
+            print(f"  {player.name} rolled: {self.dice.describe()}")
 
-        # Rolling doubles earns an extra turn
-        if self.dice.is_doubles():
-            print(f"  Doubles! {player.name} rolls again.")
-            return
+            # Three consecutive doubles sends a player to jail
+            if self.dice.doubles_streak >= 3:
+                print(f"  {player.name} rolled doubles three times in a row — go to jail!")
+                player.go_to_jail()
+                break
+
+            self._move_and_resolve(player, roll)
+            if player.is_eliminated:
+                return # Index already adjusted in _check_bankruptcy
+
+            # Take another turn on doubles
+            if self.dice.is_doubles():
+                print("  Doubles! Take another turn.")
+                continue
+            else:
+                break
 
         self.advance_turn()
 
