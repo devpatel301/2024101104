@@ -12,3 +12,7 @@ Iteration 3:
 
 * Fixed all unnecessary import and unnecessary keyword/paren errors
 * Removed all unused variables
+
+Iteration 4:
+
+* Changed == to is for singleton comparison in board.py to check if a property is mortgaged
