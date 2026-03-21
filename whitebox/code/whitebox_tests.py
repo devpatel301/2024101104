@@ -212,20 +212,18 @@ def test_game_pay_rent_transfers_money():
     assert p_b.balance == start_balance_b - rent
     assert p_a.balance == start_balance_a + rent, "Owner should receive the rent payment"
 
+@patch('moneypoly.game.Game._move_and_resolve')
 @patch('moneypoly.ui.confirm', return_value=True)
 @patch('builtins.input', return_value='s')
-def test_game_jail_fine(mock_input, mock_confirm):
-    # Bug: the code deducts the fine from the bank, but DOES NOT deduct it from the player
+def test_game_jail_fine(mock_input, mock_confirm, mock_move):
     game = Game(["A"])
     player = game.players[0]
     player.go_to_jail()
     
     initial_balance = player.balance
     
-    # Player takes a turn while in jail and pays the fine
     game._handle_jail_turn(player)
     
-    from moneypoly.config import JAIL_FINE
     assert player.balance == initial_balance - JAIL_FINE, "Player's balance should be reduced after paying jail fine"
 
 def test_game_bankruptcy():
