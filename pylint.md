@@ -35,3 +35,8 @@ Iteration 8:
 
 * Combined the "birthday" and "collect_from_all" card actions within _apply_card(). Since both cards performed the exact same logic, they could be grouped together with an in statement.
 * Removed a redundant "if prop:"" check since title=="property" already ensures that prop is valid
+
+Iteration 9:
+
+* Initialized doubles_streak = 0 inside init in dice.py
+* Specified the ValueError type in try-except in ui.py
