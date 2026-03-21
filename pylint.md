@@ -26,3 +26,7 @@ Iteration 6:
 * Grouped all the jail related instances into one in player.py
 * Removed mortgage_vale and houses instances from property.py. Calculating mortgage when needed and houses is not needed there.
 * Added the chance and community decks to board.py from game.py
+
+Iteration 7:
+
+* Removed f-string when not needed.
