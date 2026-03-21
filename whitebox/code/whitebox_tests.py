@@ -355,10 +355,7 @@ def test_card_deck_empty():
 
 def test_card_deck_repr():
     deck = CardDeck([])
-    # Will raise ZeroDivision error if length is 0 due to bug, mock length
-    deck.cards = [1]
-    deck.index = 0
-    assert repr(deck) == "CardDeck(1 cards, next=0)"
+    assert repr(deck) == "CardDeck(0 cards, next=0)"
 
 # --- player.py ---
 def test_player_remove_property():
