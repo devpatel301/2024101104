@@ -1,6 +1,5 @@
 """Module for property and property group classes for board tile ownership and rent."""
 
-
 class Property:
     """Represents a single purchasable property tile on the MoneyPoly board."""
 
