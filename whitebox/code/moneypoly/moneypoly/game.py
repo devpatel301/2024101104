@@ -220,23 +220,30 @@ class Game:
         highest_bid = 0
         highest_bidder = None
 
-        for player in self.players:
-            print(f"  {player.name}'s bid (balance: ${player.balance}, "
-                  f"current high: ${highest_bid}):")
-            bid = ui.safe_int_input("  Enter amount (0 to pass): ", default=0)
-            if bid <= 0:
-                print(f"  {player.name} passes.")
-                continue
-            min_required = highest_bid + AUCTION_MIN_INCREMENT
-            if bid < min_required:
-                print(f"  Bid too low — minimum raise is ${AUCTION_MIN_INCREMENT}.")
-                continue
-            if bid > player.balance:
-                print(f"  {player.name} cannot afford ${bid}.")
-                continue
-            highest_bid = bid
-            highest_bidder = player
-            print(f"  {player.name} bids ${bid}.")
+        while True:
+            someone_bid = False
+            for player in self.players:
+                if player == highest_bidder:
+                    continue
+                print(f"  {player.name}'s bid (balance: ${player.balance}, "
+                      f"current high: ${highest_bid}):")
+                bid = ui.safe_int_input("  Enter amount (0 to pass): ", default=0)
+                if bid <= 0:
+                    print(f"  {player.name} passes.")
+                    continue
+                min_required = highest_bid + AUCTION_MIN_INCREMENT
+                if bid < min_required:
+                    print(f"  Bid too low — minimum raise is ${AUCTION_MIN_INCREMENT}.")
+                    continue
+                if bid > player.balance:
+                    print(f"  {player.name} cannot afford ${bid}.")
+                    continue
+                highest_bid = bid
+                highest_bidder = player
+                someone_bid = True
+                print(f"  {player.name} bids ${bid}.")
+            if not someone_bid:
+                break
 
         if highest_bidder is not None:
             highest_bidder.deduct_money(highest_bid)
