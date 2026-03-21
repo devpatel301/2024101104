@@ -40,3 +40,8 @@ Iteration 9:
 
 * Initialized doubles_streak = 0 inside init in dice.py
 * Specified the ValueError type in try-except in ui.py
+
+Iteration 10:
+
+1. In property.py, init now accepts costs grouping price and base rent
+2. Updated the initialization list in board.py to pass these two identical values grouped in a tuple

@@ -5,11 +5,10 @@ class Property:
 
     FULL_GROUP_MULTIPLIER = 2
 
-    def __init__(self, name, position, price, base_rent, group=None):
+    def __init__(self, name, position, costs, group=None):
         self.name = name
         self.position = position
-        self.price = price
-        self.base_rent = base_rent
+        self.price, self.base_rent = costs
         self.owner = None
         self.is_mortgaged = False
 
