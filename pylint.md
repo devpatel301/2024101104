@@ -30,3 +30,8 @@ Iteration 6:
 Iteration 7:
 
 * Removed f-string when not needed.
+
+Iteration 8:
+
+* Combined the "birthday" and "collect_from_all" card actions within _apply_card(). Since both cards performed the exact same logic, they could be grouped together with an in statement.
+* Removed a redundant "if prop:"" check since title=="property" already ensures that prop is valid

@@ -321,16 +321,9 @@ class Game:
             tile = self.board.get_tile_type(value)
             if tile == "property":
                 prop = self.board.get_property_at(value)
-                if prop:
-                    self._handle_property_tile(player, prop)
+                self._handle_property_tile(player, prop)
 
-        elif action == "birthday":
-            for other in self.players:
-                if other != player and other.balance >= value:
-                    other.deduct_money(value)
-                    player.add_money(value)
-
-        elif action == "collect_from_all":
+        elif action in ("birthday", "collect_from_all"):
             for other in self.players:
                 if other != player and other.balance >= value:
                     other.deduct_money(value)
