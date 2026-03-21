@@ -43,7 +43,7 @@ class Game:
             f"Turn {self.turn_number + 1}  |  {player.name}  |  ${player.balance}"
         )
 
-        if player.in_jail:
+        if player.jail["in_jail"]:
             self._handle_jail_turn(player)
             self.advance_turn()
             return
