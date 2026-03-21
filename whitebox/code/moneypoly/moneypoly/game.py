@@ -183,6 +183,7 @@ class Game:
             return False
         if player.balance < cost:
             print(f"  {player.name} cannot afford to unmortgage {prop.name} (${cost}).")
+            prop.is_mortgaged = True
             return False
         player.deduct_money(cost)
         self.bank.collect(cost)
@@ -344,9 +345,16 @@ class Game:
                 prop.is_mortgaged = False
             player.properties.clear()
             if player in self.players:
+                idx = self.players.index(player)
                 self.players.remove(player)
-            if self.current_index >= len(self.players):
+                if idx <= self.current_index:
+                    self.current_index -= 1
+            if not self.players:
                 self.current_index = 0
+            elif self.current_index >= len(self.players):
+                self.current_index = 0
+            elif self.current_index < -1:
+                self.current_index = -1
 
     def find_winner(self):
         """Return the player with the highest net worth."""
