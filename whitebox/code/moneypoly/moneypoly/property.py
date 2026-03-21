@@ -30,7 +30,8 @@ class Property:
         if self.is_mortgaged:
             return 0
         if self.group is not None and self.group.all_owned_by(self.owner):
-            return self.base_rent * self.FULL_GROUP_MULTIPLIER
+            if not self.group.any_mortgaged():
+                return self.base_rent * self.FULL_GROUP_MULTIPLIER
         return self.base_rent
 
     def mortgage(self):
@@ -82,6 +83,10 @@ class PropertyGroup:
         if player is None:
             return False
         return all(p.owner == player for p in self.properties)
+
+    def any_mortgaged(self):
+        """Return True if any property in this group is currently mortgaged."""
+        return any(p.is_mortgaged for p in self.properties)
 
     def get_owner_counts(self):
         """Return a dict mapping each owner to how many properties they hold in this group."""
