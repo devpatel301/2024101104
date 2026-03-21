@@ -426,7 +426,7 @@ class Game:
             print("  No mortgaged properties to redeem.")
             return
         for i, prop in enumerate(mortgaged):
-            cost = int(prop.mortgage_value * 1.1)
+            cost = int(prop.mortgage_value() * 1.1)
             print(f"  {i + 1}. {prop.name}  (cost to redeem: ${cost})")
         idx = ui.safe_int_input("  Select: ", default=0) - 1
         if 0 <= idx < len(mortgaged):
