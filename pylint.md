@@ -16,3 +16,7 @@ Iteration 3:
 Iteration 4:
 
 * Changed == to is for singleton comparison in board.py to check if a property is mortgaged
+
+Iteration 5:
+
+* Fixed all final new line missing errors
