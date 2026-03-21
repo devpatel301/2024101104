@@ -645,6 +645,10 @@ def test_bank_edge_cases():
     b.give_loan(p, 0)
     b.give_loan(p, -100)
     assert p.balance == STARTING_BALANCE
+    
+    start_funds = b.get_balance()
+    b.collect(-50)
+    assert b.get_balance() == start_funds
 
 def test_property_add_existing():
     g = PropertyGroup("Test Group", "red")
