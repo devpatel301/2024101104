@@ -43,6 +43,7 @@ class Bank:
         """
         if amount <= 0:
             return
+        self.pay_out(amount)
         player.add_money(amount)
         self._loans_issued.append((player.name, amount))
         print(f"  Bank issued a ${amount} emergency loan to {player.name}.")

@@ -165,10 +165,11 @@ def test_bank_transactions():
     
 def test_bank_loans():
     bank = Bank()
+    start_funds = bank.get_balance()
     p = Player("A", 0)
     bank.give_loan(p, 500)
     assert p.balance == 500
-    assert bank._funds < 1000000 # Bank funds decrease
+    assert bank._funds == start_funds - 500 # Bank funds decrease exactly by loan amount
 
 # Game Tests
 
