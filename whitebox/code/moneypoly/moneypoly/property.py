@@ -41,7 +41,7 @@ class Property:
         if self.is_mortgaged:
             return 0
         self.is_mortgaged = True
-        return self.mortgage_value
+        return self.mortgage_value()
 
     def unmortgage(self):
         """
@@ -50,7 +50,7 @@ class Property:
         """
         if not self.is_mortgaged:
             return 0
-        cost = int(self.mortgage_value * 1.1)
+        cost = int(self.mortgage_value() * 1.1)
         self.is_mortgaged = False
         return cost
 
