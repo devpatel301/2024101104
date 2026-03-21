@@ -10,15 +10,17 @@ class Property:
         self.position = position
         self.price = price
         self.base_rent = base_rent
-        self.mortgage_value = price // 2
         self.owner = None
         self.is_mortgaged = False
-        self.houses = 0
 
         # Register with the group immediately on creation
         self.group = group
         if group is not None and self not in group.properties:
             group.properties.append(self)
+
+    def mortgage_value(self):
+        """Return the mortgage value of this property."""
+        return self.price // 2
 
     def get_rent(self):
         """

@@ -12,7 +12,6 @@ from moneypoly.player import Player
 from moneypoly.board import Board
 from moneypoly.bank import Bank
 from moneypoly.dice import Dice
-from moneypoly.cards import CardDeck, CHANCE_CARDS, COMMUNITY_CHEST_CARDS
 from moneypoly import ui
 
 
@@ -27,8 +26,6 @@ class Game:
         self.current_index = 0
         self.turn_number = 0
         self.running = True
-        self.chance_deck = CardDeck(CHANCE_CARDS)
-        self.community_deck = CardDeck(COMMUNITY_CHEST_CARDS)
 
     def current_player(self):
         """Return the Player whose turn it currently is."""
@@ -95,11 +92,11 @@ class Game:
             print(f"  {player.name} rests on Free Parking. Nothing happens.")
 
         elif tile == "chance":
-            card = self.chance_deck.draw()
+            card = self.board.chance_deck.draw()
             self._apply_card(player, card)
 
         elif tile == "community_chest":
-            card = self.community_deck.draw()
+            card = self.board.community_deck.draw()
             self._apply_card(player, card)
 
         elif tile == "railroad":

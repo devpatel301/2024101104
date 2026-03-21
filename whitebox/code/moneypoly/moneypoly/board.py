@@ -1,6 +1,7 @@
 """Module for board layout, tile definitions and property placement for MoneyPoly."""
 
 from moneypoly.property import Property, PropertyGroup
+from moneypoly.cards import CardDeck, CHANCE_CARDS, COMMUNITY_CHEST_CARDS
 from moneypoly.config import (
     JAIL_POSITION,
     GO_TO_JAIL_POSITION,
@@ -37,6 +38,8 @@ class Board:
     def __init__(self):
         self.groups = self._create_groups()
         self.properties = self._create_properties()
+        self.chance_deck = CardDeck(CHANCE_CARDS)
+        self.community_deck = CardDeck(COMMUNITY_CHEST_CARDS)
 
     def _create_groups(self):
         """Create and return the eight colour groups."""
