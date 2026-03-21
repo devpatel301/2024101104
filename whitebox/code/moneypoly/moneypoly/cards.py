@@ -1,3 +1,5 @@
+"""Module for Chance and Community Chest card definitions and deck management."""
+
 import random
 
 CHANCE_CARDS = [
@@ -5,14 +7,14 @@ CHANCE_CARDS = [
     {"description": "Bank pays you a dividend of $50.", "action": "collect", "value": 50},
     {"description": "Go to Jail. Go directly to Jail.", "action": "jail", "value": 0},
     {"description": "Pay a poor tax of $15.", "action": "pay", "value": 15},
-    {"description": "You have won a crossword competition. Collect $100.", "action": "collect", "value": 100},
-    {"description": "Your building and loan matures. Collect $150.", "action": "collect", "value": 150},
+    {"description": "Won a crossword quiz. Collect $100.", "action": "collect", "value": 100},
+    {"description": "Building and loan matures. Collect $150.", "action": "collect", "value": 150},
     {"description": "Pay school fees of $150.", "action": "pay", "value": 150},
     {"description": "Advance to Boardwalk.", "action": "move_to", "value": 39},
     {"description": "Get Out of Jail Free. Keep until needed.", "action": "jail_free", "value": 0},
     {"description": "Speeding fine — pay $15.", "action": "pay", "value": 15},
     {"description": "You are assessed for street repairs. Pay $40.", "action": "pay", "value": 40},
-    {"description": "Collect $50 from every other player.", "action": "collect_from_all", "value": 50},
+    {"description": "Collect $50 from every player.", "action": "collect_from_all", "value": 50},
 ]
 
 COMMUNITY_CHEST_CARDS = [
@@ -22,7 +24,7 @@ COMMUNITY_CHEST_CARDS = [
     {"description": "Go to Jail.", "action": "jail", "value": 0},
     {"description": "Holiday fund matures. Receive $100.", "action": "collect", "value": 100},
     {"description": "Income tax refund. Collect $20.", "action": "collect", "value": 20},
-    {"description": "It is your birthday. Collect $10 from every player.", "action": "birthday", "value": 10},
+    {"description": "Happy Birthday!. Take $10 from everyone.", "action": "birthday", "value": 10},
     {"description": "Life insurance matures. Collect $100.", "action": "collect", "value": 100},
     {"description": "Pay hospital fees of $100.", "action": "pay", "value": 100},
     {"description": "Pay school fees of $50.", "action": "pay", "value": 50},

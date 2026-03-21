@@ -1,3 +1,5 @@
+"""Core game logic for managing turns, tiles and player interactions."""
+
 import os
 
 from moneypoly.config import (

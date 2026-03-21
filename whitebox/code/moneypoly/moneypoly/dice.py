@@ -1,3 +1,5 @@
+"""Dice simulation with doubles tracking for MoneyPoly."""
+
 import random
 from moneypoly.config import BOARD_SIZE
 

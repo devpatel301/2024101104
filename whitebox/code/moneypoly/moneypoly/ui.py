@@ -1,3 +1,5 @@
+"""Module for ui elements like displaying game state and collecting input."""
+
 def print_banner(title):
     """Print a decorated section header."""
     width = 52

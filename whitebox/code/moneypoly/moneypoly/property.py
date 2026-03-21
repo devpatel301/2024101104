@@ -1,3 +1,6 @@
+"""Module for property and property group classes for board tile ownership and rent."""
+
+
 class Property:
     """Represents a single purchasable property tile on the MoneyPoly board."""
 
@@ -62,6 +65,8 @@ class Property:
 
 
 class PropertyGroup:
+    """Groups related properties by colour for rent multiplier logic."""
+
     def __init__(self, name, color):
         self.name = name
         self.color = color
