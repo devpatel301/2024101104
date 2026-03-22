@@ -358,6 +358,10 @@ def test_card_deck_repr():
     deck = CardDeck([])
     assert repr(deck) == "CardDeck(0 cards, next=0)"
 
+def test_card_deck_repr_non_empty():
+    deck = CardDeck([{"action": "test", "description": "test", "value": 0}])
+    assert repr(deck) == "CardDeck(1 cards, next=0)"
+
 # --- player.py ---
 def test_player_remove_property():
     p = Player("A")
@@ -553,7 +557,9 @@ def test_game_play_turn_basic(mock_is_doubles, mock_roll, capsys):
     
 @patch('moneypoly.ui.confirm', side_effect=[False, False])
 @patch('builtins.input', return_value='s')
-def test_game_jail_no_action(mock_input, mock_confirm):
+@patch('moneypoly.dice.Dice.roll', return_value=4)
+@patch('moneypoly.dice.Dice.is_doubles', return_value=False)
+def test_game_jail_no_action(mock_is_doubles, mock_roll, mock_input, mock_confirm):
     game = Game(["A"])
     player = game.players[0]
     player.go_to_jail()
@@ -736,6 +742,36 @@ def test_game_bankruptcy_branches(capsys):
     game2.current_index = 0
     game2.players[0].is_eliminated = True
     game2.advance_turn() # skip eliminated
+
+def test_game_bankruptcy_index_reset_when_no_players_left():
+    game = Game(["A"])
+    player = game.players[0]
+    player.deduct_money(player.balance + 1)
+
+    game._check_bankruptcy(player)
+
+    assert game.players == []
+    assert game.current_index == 0
+
+def test_game_bankruptcy_index_clamped_when_too_large():
+    game = Game(["A", "B", "C"])
+    game.current_index = 99
+    player = game.players[1]
+    player.deduct_money(player.balance + 1)
+
+    game._check_bankruptcy(player)
+
+    assert game.current_index == 0
+
+def test_game_bankruptcy_index_clamped_when_below_minus_one():
+    game = Game(["A", "B"])
+    game.current_index = -5
+    player = game.players[0]
+    player.deduct_money(player.balance + 1)
+
+    game._check_bankruptcy(player)
+
+    assert game.current_index == -1
 
 def test_game_pay_rent_bankrupt():
     game = Game(["A", "B"])

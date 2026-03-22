@@ -73,8 +73,7 @@ class Game:
             if self.dice.is_doubles():
                 print("  Doubles! Take another turn.")
                 continue
-            else:
-                break
+            break
 
         self.advance_turn()
 
