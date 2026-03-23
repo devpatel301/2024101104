@@ -9,110 +9,149 @@ from registration import RegistrationModule
 from results import ResultsModule
 from shop import ShopModule
 
-
 class GameManager:
     """Runs the main CLI loop and owns module instances."""
 
     def __init__(self):
-        self.registration = RegistrationModule()
-        self.crew = CrewManagementModule()
-        self.inventory = InventoryModule(starting_cash=1000)
-        self.shop = ShopModule()
-        self.power_ups = PowerUpsModule()
-        self.race_management = RaceManagementModule()
-        self.results = ResultsModule(prize_amount=200)
-        self.mission_planning = MissionPlanningModule()
+        self.modules = self._build_modules()
+
+    def _build_modules(self):
+        """Create and return all module instances."""
+        return {
+            "registration": RegistrationModule(),
+            "crew": CrewManagementModule(),
+            "inventory": InventoryModule(starting_cash=1000),
+            "shop": ShopModule(),
+            "power_ups": PowerUpsModule(),
+            "race_management": RaceManagementModule(),
+            "results": ResultsModule(prize_amount=200),
+            "mission_planning": MissionPlanningModule(),
+        }
+
+    def execute_choice(self, choice):
+        """Execute selected command and return False only when exiting."""
+        handlers = {
+            "1": self._handle_register_member,
+            "2": self._handle_assign_skill,
+            "3": self._handle_update_cash,
+            "4": self._handle_add_inventory_item,
+            "5": self._handle_buy_item,
+            "6": self._handle_run_race,
+            "7": self._handle_assign_mission,
+            "8": self._print_state,
+        }
+        if choice == "0":
+            print("Exiting Street Race Manager.")
+            return False
+
+        handler = handlers.get(choice)
+        if not handler:
+            print("Invalid option. Enter a number from the menu.")
+            return True
+
+        handler()
+        return True
+
+    def show_menu(self):
+        """Display the main menu."""
+        print("\nStreet Race Manager")
+        print("1. Register crew member")
+        print("2. Assign crew skill")
+        print("3. Update cash")
+        print("4. Add inventory item")
+        print("5. Buy item from shop")
+        print("6. Setup and run race")
+        print("7. Assign mission")
+        print("8. View system state")
+        print("0. Exit")
 
     def run(self):
+        """Run the main command-loop until user chooses to exit."""
         while True:
-            print("\nStreet Race Manager")
-            print("1. Register crew member")
-            print("2. Assign crew skill")
-            print("3. Update cash")
-            print("4. Add inventory item")
-            print("5. Buy item from shop")
-            print("6. Setup and run race")
-            print("7. Assign mission")
-            print("8. View system state")
-            print("0. Exit")
+            self.show_menu()
             choice = input("Choose an option: ").strip()
-
-            if choice == "1":
-                name = input("Member name: ")
-                role = input("Role (driver/mechanic/strategist): ")
-                ok, message = self.registration.register_member(name, role)
-                print(message)
-                if not ok:
-                    print("Please try again.")
-            elif choice == "2":
-                name = input("Member name: ")
-                level = input("Skill level (1-100): ")
-                special = input("Special skill / power-up name: ")
-                ok, message = self.crew.assign_skill(name, level, special, self.registration)
-                print(message)
-            elif choice == "3":
-                amount = input("Cash change (use negative to deduct): ")
-                ok, message = self.inventory.update_cash(amount)
-                print(message)
-            elif choice == "4":
-                category = input("Category (cars/spare_parts/tools): ")
-                item = input("Item name: ")
-                ok, message = self.inventory.add_item(category, item)
-                print(message)
-            elif choice == "5":
-                print("Shop Catalog:")
-                for item_name, details in self.shop.list_catalog().items():
-                    price, category = details
-                    print(f"- {item_name}: {price} ({category})")
-                item_name = input("Item to buy: ")
-                ok, message = self.shop.buy_item(item_name, self.inventory)
-                print(message)
-            elif choice == "6":
-                driver = input("Driver name: ")
-                car = input("Car name: ")
-                power_up = input("Power-up to use (leave blank for none): ")
-                ok, message, race_context = self.race_management.setup_race(
-                    driver,
-                    car,
-                    self.crew,
-                    self.registration,
-                    self.inventory,
-                    self.power_ups,
-                    power_up,
-                )
-                print(message)
-                if ok:
-                    result = self.results.generate_result(
-                        race_context["win_probability"],
-                        self.inventory,
-                        race_context["car"],
-                    )
-                    print(
-                        f"Race roll: {result['roll']} | Win chance: "
-                        f"{result['win_probability']}% | {result['message']}"
-                    )
-            elif choice == "7":
-                mission = input("Mission type (repair/other): ")
-                target_car = input("Target car name: ")
-                ok, message = self.mission_planning.assign_mission(
-                    mission,
-                    target_car,
-                    self.registration,
-                    self.inventory,
-                )
-                print(message)
-            elif choice == "8":
-                self._print_state()
-            elif choice == "0":
-                print("Exiting Street Race Manager.")
+            if not self.execute_choice(choice):
                 break
-            else:
-                print("Invalid option. Enter a number from the menu.")
+
+    def _handle_register_member(self):
+        name = input("Member name: ")
+        role = input("Role (driver/mechanic/strategist): ")
+        ok, message = self.modules["registration"].register_member(name, role)
+        print(message)
+        if not ok:
+            print("Please try again.")
+
+    def _handle_assign_skill(self):
+        name = input("Member name: ")
+        level = input("Skill level (1-100): ")
+        special = input("Special skill / power-up name: ")
+        _ok, message = self.modules["crew"].assign_skill(
+            name,
+            level,
+            special,
+            self.modules["registration"],
+        )
+        print(message)
+
+    def _handle_update_cash(self):
+        amount = input("Cash change (use negative to deduct): ")
+        _ok, message = self.modules["inventory"].update_cash(amount)
+        print(message)
+
+    def _handle_add_inventory_item(self):
+        category = input("Category (cars/spare_parts/tools): ")
+        item = input("Item name: ")
+        _ok, message = self.modules["inventory"].add_item(category, item)
+        print(message)
+
+    def _handle_buy_item(self):
+        print("Shop Catalog:")
+        for item_name, details in self.modules["shop"].list_catalog().items():
+            price, category = details
+            print(f"- {item_name}: {price} ({category})")
+        item_name = input("Item to buy: ")
+        _ok, message = self.modules["shop"].buy_item(item_name, self.modules["inventory"])
+        print(message)
+
+    def _handle_run_race(self):
+        race_request = {
+            "driver_name": input("Driver name: "),
+            "car_name": input("Car name: "),
+            "power_up_name": input("Power-up to use (leave blank for none): "),
+        }
+        references = {
+            "crew_ref": self.modules["crew"],
+            "registration_ref": self.modules["registration"],
+            "inventory_ref": self.modules["inventory"],
+            "power_up_module": self.modules["power_ups"],
+        }
+        ok, message, race_context = self.modules["race_management"].setup_race(
+            race_request,
+            references,
+        )
+        print(message)
+        if ok and race_context:
+            result = self.modules["results"].generate_result(
+                self.modules["inventory"],
+                race_context["car"],
+            )
+            print(f"Race roll: {result['roll']} | {result['message']}")
+
+    def _handle_assign_mission(self):
+        mission = input("Mission type (repair/other): ")
+        target_car = input("Target car name: ")
+        _ok, message = self.modules["mission_planning"].assign_mission(
+            mission,
+            target_car,
+            self.modules["registration"],
+            self.modules["inventory"],
+        )
+        print(message)
 
     def _print_state(self):
         """Print complete current system state."""
         print("\nCrew Members:")
-        members = self.registration.list_members()
+        members = self.modules["registration"].list_members()
         if not members:
             print("- none")
         else:
@@ -120,29 +159,24 @@ class GameManager:
                 print(f"- {name}: {role}")
 
         print("\nCrew Skills:")
-        skills = self.crew.list_skills()
+        skills = self.modules["crew"].list_skills()
         if not skills:
             print("- none")
         else:
             for name, data in skills.items():
-                print(
-                    f"- {name}: level {data['skill_level']}, "
-                    f"special {data['special_skill']}"
-                )
+                print(f"- {name}: level {data['skill_level']}, special {data['special_skill']}")
 
+        inventory = self.modules["inventory"]
         print("\nInventory:")
-        print(f"- Cash: {self.inventory.cash_balance}")
-        print(f"- Cars: {self.inventory.cars or ['none']}")
-        print(f"- Spare Parts: {self.inventory.spare_parts or ['none']}")
-        print(f"- Tools: {self.inventory.tools or ['none']}")
+        print(f"- Cash: {inventory.cash_balance}")
+        print(f"- Cars: {inventory.cars or ['none']}")
+        print(f"- Spare Parts: {inventory.spare_parts or ['none']}")
+        print(f"- Tools: {inventory.tools or ['none']}")
 
         print("\nRecent Results:")
-        history = self.results.list_results()
+        history = self.modules["results"].list_results()
         if not history:
             print("- none")
         else:
             for entry in history[-5:]:
-                print(
-                    f"- Roll {entry['roll']} vs {entry['win_probability']}%"
-                    f" -> {entry['message']}"
-                )
+                print(f"- Roll {entry['roll']} -> {entry['message']}")

@@ -9,10 +9,10 @@ class ResultsModule:
         self.prize_amount = prize_amount
         self.race_history = []
 
-    def generate_result(self, win_probability, inv_ref, car_name):
+    def generate_result(self, inv_ref, car_name):
         """Produce race result and update inventory accordingly."""
         roll = random.randint(1, 100)
-        is_win = roll <= int(win_probability)
+        is_win = roll <= 50
 
         if is_win:
             inv_ref.update_cash(self.prize_amount)
@@ -24,7 +24,6 @@ class ResultsModule:
         result = {
             "win": is_win,
             "roll": roll,
-            "win_probability": win_probability,
             "message": outcome,
         }
         self.race_history.append(result)

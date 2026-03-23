@@ -1,5 +1,4 @@
 """Inventory module for Street Race Manager."""
-
 class InventoryModule:
     """Tracks cash, cars, spare parts, and tools."""
 
@@ -8,7 +7,6 @@ class InventoryModule:
         self.cars = []
         self.spare_parts = []
         self.tools = []
-
     def update_cash(self, amount):
         """Add (or subtract) cash and return the new balance."""
         try:
