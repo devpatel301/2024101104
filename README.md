@@ -32,7 +32,7 @@ python3 -m pytest tests -q
 ### Whitebox tests
 
 ```bash
-cd whitebox/code
+cd whitebox/tests
 python3 -m pytest whitebox_tests.py -q
 ```
 
