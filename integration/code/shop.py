@@ -1,6 +1,5 @@
 """Shop module for Street Race Manager."""
 
-
 class ShopModule:
     """Handles purchases of cars, parts and tools."""
 

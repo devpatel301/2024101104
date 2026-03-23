@@ -1,6 +1,5 @@
 """Race management module for Street Race Manager."""
 
-
 class RaceManagementModule:
     """Creates race context and calculates winning probability."""
 

@@ -1,6 +1,5 @@
 """Crew management module for Street Race Manager."""
 
-
 class CrewManagementModule:
     """Stores skill information for registered crew members."""
 
